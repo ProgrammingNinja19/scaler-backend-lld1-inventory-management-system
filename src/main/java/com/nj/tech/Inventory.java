@@ -2,19 +2,23 @@ package com.nj.tech;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.LinkedList;
 
 /*
  * Created by Ninad Jingare on  Date: 20-12-2024
  */
 public class Inventory<T extends Item> {
     private HashMap<String,T> items;
+    private LinkedList<T> recentlyViewdItems;
 
     public Inventory() {
         this.items = new HashMap<>();
+        this.recentlyViewdItems = new LinkedList<>();
     }
 
-    public Inventory(HashMap<String, T> items) {
+    public Inventory(HashMap<String, T> items,LinkedList<T> recentlyViewdItems) {
         this.items = items;
+        this.recentlyViewdItems = recentlyViewdItems;
     }
 
     public HashMap<String, T> getItems() {
@@ -26,6 +30,10 @@ public class Inventory<T extends Item> {
     }
 
     public void addItem(T item){
+        if(items.containsKey(item.getId())){
+            System.out.println("Item "+item+"already exists");
+            return;
+        }
         this.items.put(item.getId(),item);
     }
 
@@ -39,5 +47,13 @@ public class Inventory<T extends Item> {
 
     public Collection<T> getAllItems(){
         return this.items.values();
+    }
+
+    public void addRecentlyViewItems(T item){
+            if(recentlyViewdItems.size()==10){
+                recentlyViewdItems.remove(recentlyViewdItems.get(0));
+            }
+            recentlyViewdItems.add(item);
+
     }
 }
